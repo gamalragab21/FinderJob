@@ -26,7 +26,11 @@ import com.example.myapplication.databinding.ItemContainrJobShowBinding
 import com.example.myapplication.models.Job
 import javax.inject.Inject
 import androidx.annotation.Nullable
+import com.example.myapplication.utils.Constants
+import com.example.myapplication.utils.dateFormatter
 import com.squareup.picasso.Picasso
+import java.sql.Time
+import java.util.*
 
 
 class JobsAdapter @Inject constructor(
@@ -44,20 +48,13 @@ class JobsAdapter @Inject constructor(
 
     private val diffCallback = object : DiffUtil.ItemCallback<Job>() {
         override fun areContentsTheSame(oldItem: Job, newItem: Job): Boolean {
-            return  areItemsTheSame(oldItem, newItem) && oldItem.hashCode() == newItem.hashCode()
+            return oldItem.hashCode() == newItem.hashCode()
         }
 
         override fun areItemsTheSame(oldItem: Job, newItem: Job): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun getChangePayload(oldItem: Job, newItem: Job): Any? {
-            if(areItemsTheSame(oldItem, newItem) && !areContentsTheSame(oldItem, newItem)) {
-                return ""
-            } else {
-                return null
-            }
-        }
     }
     private val differ = AsyncListDiffer(this, diffCallback)
 
@@ -65,24 +62,26 @@ class JobsAdapter @Inject constructor(
 
 
         fun bindData(job: Job) {
-
             loadPhotoImageCompany(job.company_logo_url)
-            bindingAdapter.tvJobTitle.text = if (job.title.isNotEmpty())
+
+            bindingAdapter.tvJobTitle.text = if (!job.title.isNullOrEmpty())
                 job.title.toString()
             else "unknown"
 
-            bindingAdapter.tvCompanyName.text = if (job.company_name.isNotEmpty())
+            bindingAdapter.tvCompanyName.text = if (!job.company_name.isNullOrEmpty())
                 job.company_name.toString()
             else "unknown"
             bindingAdapter.tvCompanyLocation.text =
-                if (job.candidate_required_location.isNotEmpty())
+                if (!job.candidate_required_location.isNullOrEmpty())
                     job.candidate_required_location.toString()
                 else "unknown"
-            bindingAdapter.tvJobType.text = if (job.job_type.isNotEmpty())
+            bindingAdapter.tvJobType.text = if (!job.job_type.isNullOrEmpty())
                 job.job_type.toString()
             else "unknown"
-            bindingAdapter.tvCreateAt.text = if (job.publication_date.isNotEmpty())
-                job.publication_date.toString()
+            bindingAdapter.tvCreateAt.text = if (!job.publication_date.isNullOrEmpty())
+
+               Constants.getTimeAgo( dateFormatter(job.publication_date),context)
+
             else "unknown"
         }
 
@@ -90,42 +89,43 @@ class JobsAdapter @Inject constructor(
             Log.i("GamalJob", "onBindViewHolder: $companyLogoUrl")
 
             if (companyLogoUrl.isNullOrEmpty()) {
-                bindingAdapter.progress.stopShimmer()
-                bindingAdapter.progress.visibility = View.GONE
+                bindingAdapter.progressShimmer.stopShimmer()
+                bindingAdapter.progressShimmer.visibility = View.GONE
+            }else {
+                companyLogoUrl.let {
+                    glide.load(it)
+                        .error(com.example.myapplication.R.drawable.ic_round_business_center_24)
+                        .listener(object : RequestListener<Drawable?> {
+                            override fun onLoadFailed(
+                                @Nullable e: GlideException?,
+                                model: Any,
+                                target: Target<Drawable?>,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                Log.i("herejobserror", "onLoadFailed: ")
+                                bindingAdapter.progressShimmer.stopShimmer()
+                                bindingAdapter.progressShimmer.isVisible = false
+                                return false
+                            }
+
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any,
+                                target: Target<Drawable?>,
+                                dataSource: DataSource,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                Log.i("herejobserror", "onResourceReady: ")
+
+                                bindingAdapter.progressShimmer.stopShimmer()
+                                bindingAdapter.progressShimmer.isVisible = false
+
+                                return false
+                            }
+                        }).into(bindingAdapter.photoPreview)
+                }
+
             }
-
-            companyLogoUrl?.let {
-                glide.load(it)
-                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                    .error(com.example.myapplication.R.drawable.ic_round_business_center_24)
-                    .listener(object : RequestListener<Drawable?> {
-                        override fun onLoadFailed(
-                            @Nullable e: GlideException?,
-                            model: Any,
-                            target: Target<Drawable?>,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            bindingAdapter.progress.stopShimmer()
-                            bindingAdapter.progress.visibility = View.GONE
-                            return false
-                        }
-
-                        override fun onResourceReady(
-                            resource: Drawable?,
-                            model: Any,
-                            target: Target<Drawable?>,
-                            dataSource: DataSource,
-                            isFirstResource: Boolean
-                        ): Boolean {
-                            bindingAdapter.progress.stopShimmer()
-                            bindingAdapter.progress.visibility = View.GONE
-
-                            return false
-                        }
-                    }).into(bindingAdapter.photoPreview)
-            }
-
-
         }
     }
 
@@ -153,6 +153,13 @@ class JobsAdapter @Inject constructor(
                 }
             }
 
+
+            bindingAdapter.mark.setOnClickListener {
+                onItemMarkerClickListener?.let { click ->
+                    click(job)
+                }
+            }
+
         }
     }
 
@@ -164,6 +171,10 @@ class JobsAdapter @Inject constructor(
     fun setOnItemClickListener(listener: (Job) -> Unit) {
         onItemClickListener = listener
     }
+    private var onItemMarkerClickListener: ((Job) -> Unit)? = null
 
+    fun setOnItemMarkerClickListener(listener: (Job) -> Unit) {
+        onItemMarkerClickListener = listener
+    }
 
 }

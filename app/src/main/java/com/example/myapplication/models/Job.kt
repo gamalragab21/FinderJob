@@ -1,8 +1,12 @@
 package com.example.myapplication.models
 
+import androidx.annotation.NonNull
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "job_table")
 data class Job(
 
     @SerializedName("candidate_required_location")
@@ -25,6 +29,8 @@ data class Job(
     @Expose
     val description: String,
 
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
     @SerializedName("id")
     @Expose
     val id: Int,
@@ -41,9 +47,9 @@ data class Job(
     @Expose
     val salary: String,
 
-    @SerializedName("tags")
-    @Expose
-    val tags: List<String>,
+//    @SerializedName("tags")
+//    @Expose
+//    val tags: List<String>,
 
     @SerializedName("title")
     @Expose
@@ -51,5 +57,10 @@ data class Job(
 
     @SerializedName("url")
     @Expose
-    val url: String
-)
+    val url: String,
+
+    @Expose
+    val is_mark:Int
+){
+
+}

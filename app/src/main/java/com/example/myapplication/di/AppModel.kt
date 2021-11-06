@@ -2,6 +2,7 @@ package com.example.myapplication.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -19,13 +20,19 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import okhttp3.logging.HttpLoggingInterceptor
+import myappnew.com.conserve.data.JobDataBase
 import retrofit2.Retrofit
 import java.util.*
 import javax.inject.Singleton
-import okhttp3.OkHttpClient
+import okhttp3.Request;
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
+import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
+import okhttp3.logging.HttpLoggingInterceptor
+
+
+
 
 
 @Module
@@ -72,6 +79,18 @@ object AppModel {
 
     @Provides
     @Singleton
+    fun provideAppDatabase(@ApplicationContext appContext: Context): JobDataBase {
+        return Room.databaseBuilder(
+            appContext,
+            JobDataBase::class.java,
+            "job_DB"
+        ).setJournalMode(RoomDatabase.JournalMode.TRUNCATE)
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
     fun providesMoshi():Moshi= Moshi
         .Builder()
         .add(KotlinJsonAdapterFactory())
@@ -79,15 +98,33 @@ object AppModel {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor( )= HttpLoggingInterceptor()
+    fun provideHttpLoggingInterceptor( ): HttpLoggingInterceptor {
+        val localHttpLoggingInterceptor = HttpLoggingInterceptor()
+        localHttpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        return localHttpLoggingInterceptor
+    }
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(interceptor:HttpLoggingInterceptor ):OkHttpClient {
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideOkHttpClient(interceptor:HttpLoggingInterceptor ):OkHttpClient =
+        OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val original: Request = chain.request()
+                val builder: Request.Builder = chain.request().newBuilder()
 
-       return OkHttpClient.Builder().addInterceptor(interceptor).build()
-    }
+            //    builder.addHeader(Constants.CONTENT_TYPE, Constants.APP_JSON)
+                builder.method(original.method, original.body)
+                chain.proceed(builder.build())
+            }
+            .addNetworkInterceptor(interceptor)
+            .build()
+//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+//
+//       return OkHttpClient.Builder().addInterceptor(interceptor).build()
+
 
     @Provides
     @Singleton
@@ -96,9 +133,7 @@ object AppModel {
         Retrofit.Builder()
             .run {
                 baseUrl(Constants.BASE_URL)
-
-          //     client(okHttpClient)
-              //  addConverterFactory(MoshiConverterFactory.create(moshi))
+                client(okHttpClient)
                 addConverterFactory(GsonConverterFactory.create())
                 build()
             }.create(ApiJobService::class.java)

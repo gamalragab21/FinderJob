@@ -11,6 +11,9 @@ import okhttp3.ResponseBody
 import retrofit2.HttpException;
 import java.io.IOException
 import java.net.SocketTimeoutException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun isNetworkConnected(@ApplicationContext context: Context): Flow<Boolean> = flow {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -52,4 +55,16 @@ fun errorMessageHandler(call: Call, t: Throwable): Flow<String?> =flow{
     }
     emit( "Network Problem, Please try again!")
 }
+
+fun dateFormatter(Date: String?): Long {
+
+    Date?.let {
+
+        val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
+        val date: Date = formatter.parse(Date)
+        return date.time
+    }
+    return 0
+}
+
 
