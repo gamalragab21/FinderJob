@@ -9,6 +9,7 @@ import com.example.myapplication.qualifiers.MainThread
 import com.example.myapplication.repositories.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,8 +28,15 @@ class HomeViewModel
     private val _insertJobStatus= MutableLiveData<Event<Resource<Long>>>()
     val insertJobStatus: LiveData<Event<Resource<Long>>> =_insertJobStatus
 
+    private val _deleteJobStatus= MutableLiveData<Event<Resource<Int>>>()
+    val deleteJobStatus: LiveData<Event<Resource<Int>>> =_deleteJobStatus
+
     private val _listJobMarkerStatus= MutableLiveData<Event<Resource<List<Job>>>>()
     val listJobMarkerStatus: LiveData<Event<Resource<List<Job>>>> =_listJobMarkerStatus
+
+
+            val data=repository.getMarkerListLimmited()
+
 
         fun  getAllJobs(currentJob: Int) {
 
@@ -41,13 +49,14 @@ class HomeViewModel
 
         }
 
-    fun  getAllMarkerJobs() {
+//
+    fun  deleteMarkedJob(job: Job) {
 
-        _listJobMarkerStatus.postValue(Event(Resource.Loading()))
+        _deleteJobStatus.postValue(Event(Resource.Loading()))
 
         viewModelScope.launch(dispatcher) {
-            val result=repository.getMarkerList()
-            _listJobMarkerStatus.postValue(Event(result))
+            val result=repository.deleteJob(job)
+            _deleteJobStatus.postValue(Event(result))
         }
 
     }

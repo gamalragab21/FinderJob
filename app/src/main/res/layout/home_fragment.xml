@@ -71,9 +71,12 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="42dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground"
                     android:layout_marginEnd="16dp"
                     android:contentDescription="@string/app_name"
-                    android:src="@drawable/ic_baseline_more_vert_24"
+                    android:src="@drawable/ic_baseline_light_mode_24"
                     android:paddingBottom="10dp"
                     app:tint="@color/white"/>
 
@@ -85,8 +88,11 @@
                     android:layout_height="wrap_content">
 
                     <com.google.android.material.card.MaterialCardView
-                        android:id="@+id/card_search"
+                        android:id="@+id/search"
                         android:layout_width="match_parent"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackground"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -138,7 +144,15 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
-
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_rounded_top"
+        android:fillViewport="true"
+        android:fitsSystemWindows="true"
+        app:layout_anchor="@id/appbar"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
         <RelativeLayout
             android:layout_width="match_parent"
             app:layout_anchor="@id/appbar"
@@ -173,12 +187,31 @@
                         android:textColor="@color/gray_600"
                         android:textSize="16dp" />
 
+                    <TextView
+                        android:id="@+id/showAllMarked"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:text="Show all"
+                        android:textSize="14dp"
+                        android:textColor="@color/gray_300"
+                        android:layout_marginStart="21dp"
+                        android:visibility="gone"
+                        android:layout_marginEnd="21dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/book"/>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerViewMarked"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_below="@id/markedTitle"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         android:nestedScrollingEnabled="true"
@@ -297,5 +330,5 @@
 
         </RelativeLayout>
 
-
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

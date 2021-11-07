@@ -22,6 +22,7 @@ class SplashFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.start.setOnClickListener {
+            findNavController().navigateUp()
             findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
         }
     }

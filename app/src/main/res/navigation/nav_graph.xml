@@ -9,7 +9,14 @@
         android:id="@+id/homeFragment"
         tools:layout="@layout/home_fragment"
         android:name="com.example.myapplication.ui.fragments.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_showDetailsFragment"
+            app:destination="@id/showDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_listJobsFragment"
+            app:destination="@id/listJobsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/splashFragment"
         tools:layout="@layout/splash_fragment"
@@ -18,5 +25,27 @@
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/showDetailsFragment"
+        tools:layout="@layout/show_details_fragment"
+        android:name="com.example.myapplication.ui.fragments.ShowDetailsFragment"
+        android:label="ShowDetailsFragment" >
+        <argument
+            android:name="job"
+            app:argType="com.example.myapplication.models.Job" />
+    </fragment>
+    <fragment
+        android:id="@+id/listJobsFragment"
+        android:name="com.example.myapplication.ui.fragments.ListJobsFragment"
+        android:label="ListJobsFragment" >
+        <argument
+            android:name="keyWord"
+            app:argType="string"
+            app:nullable="true"
+            />
+        <action
+            android:id="@+id/action_listJobsFragment_to_showDetailsFragment"
+            app:destination="@id/showDetailsFragment" />
     </fragment>
 </navigation>

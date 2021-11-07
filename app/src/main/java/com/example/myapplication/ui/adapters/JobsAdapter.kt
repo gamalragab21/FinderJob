@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -26,6 +27,9 @@ import com.example.myapplication.databinding.ItemContainrJobShowBinding
 import com.example.myapplication.models.Job
 import javax.inject.Inject
 import androidx.annotation.Nullable
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import com.example.myapplication.R
+import com.example.myapplication.ui.viewmodels.HomeViewModel
 import com.example.myapplication.utils.Constants
 import com.example.myapplication.utils.dateFormatter
 import com.squareup.picasso.Picasso
@@ -40,6 +44,7 @@ class JobsAdapter @Inject constructor(
 
 
     private lateinit var bindingAdapter: ItemContainrJobShowBinding
+
 
 
     var jobs: List<Job>
@@ -62,6 +67,7 @@ class JobsAdapter @Inject constructor(
 
 
         fun bindData(job: Job) {
+            updateMark(job.is_mark)
             loadPhotoImageCompany(job.company_logo_url)
 
             bindingAdapter.tvJobTitle.text = if (!job.title.isNullOrEmpty())
@@ -91,41 +97,41 @@ class JobsAdapter @Inject constructor(
             if (companyLogoUrl.isNullOrEmpty()) {
                 bindingAdapter.progressShimmer.stopShimmer()
                 bindingAdapter.progressShimmer.visibility = View.GONE
-            }else {
-                companyLogoUrl.let {
-                    glide.load(it)
-                        .error(com.example.myapplication.R.drawable.ic_round_business_center_24)
-                        .listener(object : RequestListener<Drawable?> {
-                            override fun onLoadFailed(
-                                @Nullable e: GlideException?,
-                                model: Any,
-                                target: Target<Drawable?>,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                Log.i("herejobserror", "onLoadFailed: ")
-                                bindingAdapter.progressShimmer.stopShimmer()
-                                bindingAdapter.progressShimmer.isVisible = false
-                                return false
-                            }
-
-                            override fun onResourceReady(
-                                resource: Drawable?,
-                                model: Any,
-                                target: Target<Drawable?>,
-                                dataSource: DataSource,
-                                isFirstResource: Boolean
-                            ): Boolean {
-                                Log.i("herejobserror", "onResourceReady: ")
-
-                                bindingAdapter.progressShimmer.stopShimmer()
-                                bindingAdapter.progressShimmer.isVisible = false
-
-                                return false
-                            }
-                        }).into(bindingAdapter.photoPreview)
-                }
-
             }
+
+            companyLogoUrl?.let {
+                glide.load(it)
+                    .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                    .error(com.example.myapplication.R.drawable.ic_round_business_center_24)
+                    .listener(object : RequestListener<Drawable?> {
+                        override fun onLoadFailed(
+                            @Nullable e: GlideException?,
+                            model: Any,
+                            target: Target<Drawable?>,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            bindingAdapter.progressShimmer.stopShimmer()
+                            bindingAdapter.progressShimmer.visibility = View.GONE
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable?,
+                            model: Any,
+                            target: Target<Drawable?>,
+                            dataSource: DataSource,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            bindingAdapter.progressShimmer.stopShimmer()
+                            bindingAdapter.progressShimmer.visibility = View.GONE
+
+                            return false
+                        }
+                    }).into(bindingAdapter.photoPreview)
+            }
+
+
+
         }
     }
 
@@ -145,6 +151,9 @@ class JobsAdapter @Inject constructor(
 
         holder.apply {
 
+
+
+
             bindData(job)
 
             bindingAdapter.rootClickable.setOnClickListener {
@@ -156,7 +165,7 @@ class JobsAdapter @Inject constructor(
 
             bindingAdapter.mark.setOnClickListener {
                 onItemMarkerClickListener?.let { click ->
-                    click(job)
+                    click(job,position)
                 }
             }
 
@@ -171,10 +180,17 @@ class JobsAdapter @Inject constructor(
     fun setOnItemClickListener(listener: (Job) -> Unit) {
         onItemClickListener = listener
     }
-    private var onItemMarkerClickListener: ((Job) -> Unit)? = null
+    private var onItemMarkerClickListener: ((Job,Int) -> Unit)? = null
 
-    fun setOnItemMarkerClickListener(listener: (Job) -> Unit) {
+    fun setOnItemMarkerClickListener(listener: (Job,Int) -> Unit) {
         onItemMarkerClickListener = listener
     }
+
+
+    fun updateMark(isMarker:Int){
+        if (isMarker<=0) bindingAdapter.mark.setImageResource(R.drawable.ic_mark)
+        else bindingAdapter.mark.setImageResource(R.drawable.ic_marked)
+    }
+
 
 }

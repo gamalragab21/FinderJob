@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/MyApplication3/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2671875" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/bg_job_type.xml" value="0.2713541666666667" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/bg_photo_item.xml" value="0.12222222222222222" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/bg_rounded_green_outline.xml" value="0.12222222222222222" />
@@ -10,6 +11,7 @@
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/bg_shadow_bottom_to_top_transparent.xml" value="0.12222222222222222" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/bg_shadow_up_to_down.xml" value="0.12222222222222222" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/bg_strip_round.xml" value="0.12222222222222222" />
+        <entry key="..\:/MyApplication3/app/src/main/res/drawable/btn_round_blue_pressed.xml" value="0.2713541666666667" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/btn_round_green_pressed.xml" value="0.12222222222222222" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/btn_round_green_selector.xml" value="0.12222222222222222" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/btn_round_green_unpressed.xml" value="0.12222222222222222" />
@@ -31,12 +33,16 @@
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/ic_twotone_work_24.xml" value="0.2713541666666667" />
         <entry key="..\:/MyApplication3/app/src/main/res/drawable/ic_undraw_empty.xml" value="0.2713541666666667" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/activity_main.xml" value="0.19882246376811594" />
+        <entry key="..\:/MyApplication3/app/src/main/res/layout/btn_round_blue_pressed.xml" value="0.2504528985507246" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/custom_dialoge.xml" value="0.19882246376811594" />
+        <entry key="..\:/MyApplication3/app/src/main/res/layout/dialoge_info.xml" value="0.2504528985507246" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/home_fragment.xml" value="0.24114583333333334" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/item_containr_job_show.xml" value="0.19746376811594202" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/item_containr_job_show_placeholder.xml" value="0.254981884057971" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/item_marker.xml" value="0.254981884057971" />
+        <entry key="..\:/MyApplication3/app/src/main/res/layout/list_jobs_fragment.xml" value="0.2504528985507246" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/progress_dialoge.xml" value="0.19972826086956522" />
+        <entry key="..\:/MyApplication3/app/src/main/res/layout/show_details_fragment.xml" value="0.2504528985507246" />
         <entry key="..\:/MyApplication3/app/src/main/res/layout/splash_fragment.xml" value="0.2552083333333333" />
       </map>
     </option>

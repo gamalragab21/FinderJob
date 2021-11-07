@@ -26,6 +26,7 @@ import com.example.myapplication.databinding.ItemContainrJobShowBinding
 import com.example.myapplication.models.Job
 import javax.inject.Inject
 import androidx.annotation.Nullable
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemMarkerBinding
 import com.squareup.picasso.Picasso
 
@@ -61,14 +62,16 @@ class MarkerAdapter @Inject constructor(
 
         fun bindData(job: Job) {
             loadPhotoImageCompany(job.company_logo_url)
-            bindingAdapter.title.text = if (job.title.isNotEmpty())
+            bindingAdapter.title.text = if (job.title?.isNotEmpty() == true)
                 job.title.toString()
             else "unknown"
 
-            bindingAdapter.lamp.text = if (job.company_name.isNotEmpty())
+            bindingAdapter.lamp.text = if (job.company_name?.isNotEmpty() == true)
                 job.company_name.toString()
             else "unknown"
 
+//            if (job.is_mark<=0) bindingAdapter.mark.setImageResource(R.drawable.ic_mark)
+//            else bindingAdapter.mark.setImageResource(R.drawable.ic_marked)
         }
 
         private fun loadPhotoImageCompany(companyLogoUrl: String?) {
@@ -132,8 +135,13 @@ class MarkerAdapter @Inject constructor(
 
             bindData(job)
 
-            bindingAdapter.mark.setOnClickListener {
+            bindingAdapter.rootView.setOnClickListener {
                 onItemClickListener?.let { click ->
+                    click(job)
+                }
+            }
+            bindingAdapter.mark.setOnClickListener {
+                onItemMarkedClickListener?.let { click ->
                     click(job)
                 }
             }
@@ -148,6 +156,11 @@ class MarkerAdapter @Inject constructor(
 
     fun setOnItemClickListener(listener: (Job) -> Unit) {
         onItemClickListener = listener
+    }
+    private var onItemMarkedClickListener: ((Job) -> Unit)? = null
+
+    fun setOnItemMarkedClickListener(listener: (Job) -> Unit) {
+        onItemMarkedClickListener = listener
     }
 
 

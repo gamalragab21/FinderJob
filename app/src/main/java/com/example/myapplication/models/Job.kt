@@ -1,5 +1,7 @@
 package com.example.myapplication.models
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,23 +13,23 @@ data class Job(
 
     @SerializedName("candidate_required_location")
     @Expose
-    val candidate_required_location: String,
+    val candidate_required_location: String?,
 
     @SerializedName("category")
     @Expose
-    val category: String,
+    val category: String?,
 
     @SerializedName("company_logo_url")
     @Expose
-    val company_logo_url: String,
+    val company_logo_url: String?,
 
     @SerializedName("company_name")
     @Expose
-    val company_name: String,
+    val company_name: String?,
 
     @SerializedName("description")
     @Expose
-    val description: String,
+    val description: String?,
 
     @PrimaryKey(autoGenerate = false)
     @NonNull
@@ -37,15 +39,15 @@ data class Job(
 
     @SerializedName("job_type")
     @Expose
-    val job_type: String,
+    val job_type: String?,
 
     @SerializedName("publication_date")
     @Expose
-    val publication_date: String,
+    val publication_date: String?,
 
     @SerializedName("salary")
     @Expose
-    val salary: String,
+    val salary: String?,
 
 //    @SerializedName("tags")
 //    @Expose
@@ -53,14 +55,20 @@ data class Job(
 
     @SerializedName("title")
     @Expose
-    val title: String,
+    val title: String?,
 
     @SerializedName("url")
     @Expose
-    val url: String,
+    val url: String?,
 
     @Expose
-    val is_mark:Int
-){
+    var is_mark:Int=0
+):Parcelable {
+    override fun describeContents(): Int {
+        TODO("Not yet implemented")
+    }
+    override fun writeToParcel(p0: Parcel?, p1: Int) {
+        TODO("Not yet implemented")
+    }
 
 }

@@ -17,9 +17,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import myappnew.com.conserve.data.JobDao
 import myappnew.com.conserve.data.JobDataBase
 import retrofit2.Retrofit
 import java.util.*

@@ -27,4 +27,6 @@
     <color name="navy_100">#002542</color>
     <color name="navy_200">#001D33</color>
     <color name="navy_300">#001627</color>
+    <color name="colorTextOther">#FFC107</color>
+
 </resources>
