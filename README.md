@@ -2,7 +2,7 @@
 Now , I'm finished building a simple project Job Finder App
 ##  technology used [dagger hilt, coroutines, navigation components, LiveData, Skelton patterns, clean code, Room DB, Glide,Retrofit, and more..]
 
-![Screenshot_1636369701](https://user-images.githubusercontent.com/67482991/140742170-56902db1-5b84-4271-9853-0e0c923689ec.png
+
 
 # Screenshots
 
@@ -11,7 +11,7 @@ Now , I'm finished building a simple project Job Finder App
 <img src="https://user-images.githubusercontent.com/67482991/140740046-450b5e6b-96a2-4cd5-ba1c-ed1e25f598ec.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741349-6c8cf0f7-a879-48d5-ab42-0cf2dec1f582.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741378-bac7d72a-72bc-4084-b314-f1391ce5cc4e.png" width="200">&nbsp;
-<img src="https://user-images.githubusercontent.com/67482991/140741378-bac7d72a-72bc-4084-b314-f1391ce5cc4e.png" width="200">&nbsp;
+<img src="https://user-images.githubusercontent.com/67482991/140742170-56902db1-5b84-4271-9853-0e0c923689ec.png" width="200">&nbsp;
 
 <img src="https://user-images.githubusercontent.com/67482991/140741422-8441d9b7-59de-48f5-9b55-90742981f067.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741456-cb556120-1611-4312-befb-0f7a04911c55.png" width="200">&nbsp;
