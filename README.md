@@ -22,6 +22,7 @@ Now , I'm finished building a simple project Job Finder App
 
 * [Kotlin](https://kotlinlang.org) - As a programming language.
 * [Coroutines](https://developer.android.com/kotlin/coroutines) - For multithreading while handling requests to the server and local database.
+* [Retrofit](https://square.github.io/retrofit/) - A type-safe HTTP client for Android and Java
 * [Navigation Component](https://developer.android.com/guide/navigation/navigation-getting-started) - To handle app navigation.
 * [Multidex](https://developer.android.com/studio/build/multidex) - To enable creating multi dex files because of using set of libraries that reached the maximum size of single dex file.
 * [Model-View-ViewModel(MVVM)](https://developer.android.com/topic/architecture) - Offers an implementation of observer design pattern.
