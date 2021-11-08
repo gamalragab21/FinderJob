@@ -5,17 +5,16 @@ Now , I'm finished building a simple project Job Finder App
 
 # Screenshots
 
-<img src="https://user-images.githubusercontent.com/67482991/140740912-5e8beae3-64e1-4d08-a068-513e9609cc83.png" width="200">&nbsp;
 
 <img src="https://user-images.githubusercontent.com/67482991/140741188-7eaec5e9-10b4-40ef-8fcb-0da054f8d5e8.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140740046-450b5e6b-96a2-4cd5-ba1c-ed1e25f598ec.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741349-6c8cf0f7-a879-48d5-ab42-0cf2dec1f582.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741378-bac7d72a-72bc-4084-b314-f1391ce5cc4e.png" width="200">&nbsp;
+<img src="https://user-images.githubusercontent.com/67482991/140741575-63db7f55-e9bb-4c85-8151-2c265b3550d9.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741422-8441d9b7-59de-48f5-9b55-90742981f067.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741456-cb556120-1611-4312-befb-0f7a04911c55.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741485-7a1fcf6e-1e0d-44c9-bcb1-cc6e8a3f379b.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741497-d446e8a7-29d9-4261-8a27-980609b1b3c8.png" width="200">&nbsp;
-<img src="https://user-images.githubusercontent.com/67482991/140741575-63db7f55-e9bb-4c85-8151-2c265b3550d9.png" width="200">&nbsp;
 
 
 
