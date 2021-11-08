@@ -37,6 +37,8 @@ class HomeViewModel
 
             val data=repository.getMarkerListLimmited()
 
+            val dataIds=repository.getIdsList()
+
 
         fun  getAllJobs(currentJob: Int) {
 

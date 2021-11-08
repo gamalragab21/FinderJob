@@ -3,21 +3,14 @@ package com.example.myapplication.ui.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.ImageLoader
-import coil.load
-import coil.request.ImageRequest
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -27,14 +20,11 @@ import com.example.myapplication.databinding.ItemContainrJobShowBinding
 import com.example.myapplication.models.Job
 import javax.inject.Inject
 import androidx.annotation.Nullable
-import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.core.content.ContextCompat
 import com.example.myapplication.R
 import com.example.myapplication.ui.viewmodels.HomeViewModel
 import com.example.myapplication.utils.Constants
 import com.example.myapplication.utils.dateFormatter
-import com.squareup.picasso.Picasso
-import java.sql.Time
-import java.util.*
 
 
 class JobsAdapter @Inject constructor(
@@ -46,10 +36,11 @@ class JobsAdapter @Inject constructor(
     private lateinit var bindingAdapter: ItemContainrJobShowBinding
 
 
-
     var jobs: List<Job>
         get() = differ.currentList
         set(value) = differ.submitList(value)
+
+    lateinit var homeViewModel: HomeViewModel
 
     private val diffCallback = object : DiffUtil.ItemCallback<Job>() {
         override fun areContentsTheSame(oldItem: Job, newItem: Job): Boolean {
@@ -67,7 +58,6 @@ class JobsAdapter @Inject constructor(
 
 
         fun bindData(job: Job) {
-            updateMark(job.is_mark)
             loadPhotoImageCompany(job.company_logo_url)
 
             bindingAdapter.tvJobTitle.text = if (!job.title.isNullOrEmpty())
@@ -82,17 +72,15 @@ class JobsAdapter @Inject constructor(
                     job.candidate_required_location.toString()
                 else "unknown"
             bindingAdapter.tvJobType.text = if (!job.job_type.isNullOrEmpty())
-                job.job_type.toString()
+                if (job.job_type.toString() == "full_time") "Full Time" else "Part Time"
             else "unknown"
             bindingAdapter.tvCreateAt.text = if (!job.publication_date.isNullOrEmpty())
 
-               Constants.getTimeAgo( dateFormatter(job.publication_date),context)
-
+                Constants.getTimeAgo(dateFormatter(job.publication_date), context)
             else "unknown"
         }
 
         private fun loadPhotoImageCompany(companyLogoUrl: String?) {
-            Log.i("GamalJob", "onBindViewHolder: $companyLogoUrl")
 
             if (companyLogoUrl.isNullOrEmpty()) {
                 bindingAdapter.progressShimmer.stopShimmer()
@@ -131,7 +119,6 @@ class JobsAdapter @Inject constructor(
             }
 
 
-
         }
     }
 
@@ -150,8 +137,23 @@ class JobsAdapter @Inject constructor(
 
 
         holder.apply {
+            homeViewModel.dataIds.observeForever {
+                it?.let { list ->
+                    if (list.contains(job.id)) {
+                        // isSaved
+                        setBackGround(true, bindingAdapter.markSaved)
+                        updateMark(1, bindingAdapter.markSaved,position)
+                        job.is_mark = true
 
+                    } else {
 
+                        updateMark(0, bindingAdapter.markSaved,position)
+                         setBackGround(false, bindingAdapter.markSaved)
+                        job.is_mark = false
+                    }
+
+                }
+            }
 
 
             bindData(job)
@@ -163,12 +165,40 @@ class JobsAdapter @Inject constructor(
             }
 
 
-            bindingAdapter.mark.setOnClickListener {
+            bindingAdapter.markSaved.setOnClickListener {
                 onItemMarkerClickListener?.let { click ->
-                    click(job,position)
+                    click(job, position,bindingAdapter.markSaved)
                 }
             }
 
+        }
+    }
+
+    private fun setBackGround(isMark: Boolean, mark: ImageView) {
+        val sdk = android.os.Build.VERSION.SDK_INT;
+
+        if (isMark) {
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                mark.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_round_search_24
+                    )
+                );
+            } else {
+                mark.background = ContextCompat.getDrawable(context, R.drawable.ic_round_search_24);
+            }
+        } else {
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                mark.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_mark
+                    )
+                );
+            } else {
+                mark.background = ContextCompat.getDrawable(context, R.drawable.ic_mark);
+            }
         }
     }
 
@@ -180,17 +210,22 @@ class JobsAdapter @Inject constructor(
     fun setOnItemClickListener(listener: (Job) -> Unit) {
         onItemClickListener = listener
     }
-    private var onItemMarkerClickListener: ((Job,Int) -> Unit)? = null
 
-    fun setOnItemMarkerClickListener(listener: (Job,Int) -> Unit) {
+    private var onItemMarkerClickListener: ((Job, Int,ImageView) -> Unit)? = null
+
+    fun setOnItemMarkerClickListener(listener: (Job, Int,ImageView) -> Unit) {
         onItemMarkerClickListener = listener
     }
 
+    private fun updateMark(isMarker: Int, btnMark: ImageView, position: Int) {
 
-    fun updateMark(isMarker:Int){
-        if (isMarker<=0) bindingAdapter.mark.setImageResource(R.drawable.ic_mark)
-        else bindingAdapter.mark.setImageResource(R.drawable.ic_marked)
+        if (isMarker <= 0) btnMark.setImageResource(R.drawable.ic_mark)
+        else btnMark.setImageResource(R.drawable.ic_marked)
     }
 
-
+private fun clearObservable(){
+    homeViewModel.data?.let {
+        it.removeObserver {  }
+    }
+}
 }

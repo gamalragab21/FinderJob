@@ -194,11 +194,11 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:id="@+id/mark"
+                    android:id="@+id/markSaved"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_alignParentEnd="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:focusable="true"
                     android:padding="3dp"

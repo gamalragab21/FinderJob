@@ -62,7 +62,7 @@ data class Job(
     val url: String?,
 
     @Expose
-    var is_mark:Int=0
+    var is_mark:Boolean=false
 ):Parcelable {
     override fun describeContents(): Int {
         TODO("Not yet implemented")

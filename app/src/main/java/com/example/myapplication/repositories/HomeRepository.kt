@@ -49,7 +49,10 @@ class HomeRepository @Inject constructor(
 
 
      fun   getMarkerListLimmited(): LiveData<List<Job>> = jobDao.getAllJobs()
+
      fun   getMarkerList(): LiveData<List<Job>> = jobDao.getLiveDataMarked()
+
+     fun   getIdsList(): LiveData<List<Int>> = jobDao.getIds()
 
 //   suspend fun getMarkerList(): Resource<List<Job>> = withContext(dispatcher){
 //       safeCall {

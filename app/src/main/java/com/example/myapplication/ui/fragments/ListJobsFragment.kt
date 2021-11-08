@@ -29,6 +29,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListJobsFragment : Fragment() {
+    private var titleCurrentJob: String = ""
 
     private var _binding: ListJobsFragmentBinding? = null
 
@@ -37,6 +38,7 @@ class ListJobsFragment : Fragment() {
     private  var currentKeyWord: String?=null
 
     private val searchViewModel: SearchViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
 
     private var currentJob: Int = 40
     private var totalAvailableJobs: Int = 1
@@ -82,6 +84,23 @@ class ListJobsFragment : Fragment() {
             findNavController().navigate(action)
 
         }
+        jobsAdapter.setOnItemMarkerClickListener { job, pos ,ima->
+            Log.i("GAMALRAGAB", "setOnItemMarkerClickListener ${  job.is_mark } $pos")
+
+            titleCurrentJob = job.title ?: ""
+            if (!job.is_mark) {
+                // saved
+                homeViewModel.insertMarkedJob(job)
+//                updateMark(1, imageMark)
+//                jobsAdapter.notifyItemChanged(pos)
+            } else {
+                // un saved
+                homeViewModel.deleteMarkedJob(job)
+//                updateMark(0, imageMark)
+//                jobsAdapter.notifyItemChanged(pos)
+            }
+        }
+
         binding.swipeRefresh.post {
             subscribeToObservers()
             setupRecyclerViewJob()
@@ -128,6 +147,8 @@ class ListJobsFragment : Fragment() {
         })
 
 
+
+
     }
 
 
@@ -144,6 +165,7 @@ class ListJobsFragment : Fragment() {
 
 
                 binding.emptyView.isVisible = false
+                jobsAdapter.homeViewModel=homeViewModel
             jobsAdapter.jobs = markerJob
             jobsAdapter.notifyDataSetChanged()}
         })
@@ -189,6 +211,7 @@ class ListJobsFragment : Fragment() {
                 binding.toolbar.title="Search Jobs $currentKeyWord (${parentJobs.job_count})"
                 val oldCount: Int = jobs.size
                 jobs.addAll(newJobs)
+                jobsAdapter.homeViewModel=homeViewModel
                 jobsAdapter.jobs = jobs
                 jobsAdapter.notifyItemRangeChanged(oldCount, jobs.size)
 
@@ -196,6 +219,32 @@ class ListJobsFragment : Fragment() {
 
         })
 
+        // insert marked job
+
+        homeViewModel.insertJobStatus.observe(viewLifecycleOwner, EventObserver(
+            onError = {
+                snackbar(it)
+            },
+            onLoading = {
+
+            }, {
+                if (it > 0) {
+                    snackbar("\uD83D\uDE0D Marked $titleCurrentJob")
+                    //imageMarkerJobsAdapter.setImageResource(R.drawable.ic_marked)
+                }
+            })
+        )
+
+        homeViewModel.deleteJobStatus.observe(viewLifecycleOwner, EventObserver(
+            onError = {
+                snackbar(it)
+            },
+            onLoading = {
+
+            }, {
+                if (it > 0) snackbar("\uD83D\uDE0D UnMarked $titleCurrentJob")
+            })
+        )
 
 
     }

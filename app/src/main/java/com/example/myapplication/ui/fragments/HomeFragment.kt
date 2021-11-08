@@ -39,6 +39,7 @@ import android.R
 import android.graphics.Color
 
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 
 
 @AndroidEntryPoint
@@ -59,7 +60,7 @@ class HomeFragment : Fragment() {
     @Inject
     lateinit var markerAdapter: MarkerAdapter
 
-    private  var titleCurrentJob: String=""
+    private var titleCurrentJob: String = ""
 
 
     val jobs: ArrayList<Job> by lazy {
@@ -72,12 +73,10 @@ class HomeFragment : Fragment() {
 
         checkTheme()
 
-        binding.swipeRefresh.post {
-            getJobs()
-            setupRecyclerViewJob()
-            setupRecyclerViewMarked()
-            subscribeToObservers()
-        }
+        getJobs()
+        setupRecyclerViewJob()
+        setupRecyclerViewMarked()
+        subscribeToObservers()
 
         binding.swipeRefresh.setOnRefreshListener {
             getJobs()
@@ -148,16 +147,29 @@ class HomeFragment : Fragment() {
 
         }
 
-        jobsAdapter.setOnItemMarkerClickListener { job, pos ->
+        jobsAdapter.setOnItemMarkerClickListener { job, pos ,image->
+            Log.i("GAMALRAGAB", "setOnItemMarkerClickListener ${  job.is_mark } $pos")
+
             titleCurrentJob = job.title ?: ""
-            jobsAdapter.notifyItemChanged(pos)
-            job.is_mark = 1
-            homeViewMode.insertMarkedJob(job)
+            if (!job.is_mark) {
+                // saved
+                homeViewMode.insertMarkedJob(job)
+//                updateMark(1, imageMark)
+//                jobsAdapter.notifyItemChanged(pos)
+                updateMark(1,image)
+                setBackGround(true,image)
+            } else {
+                // un saved
+                homeViewMode.deleteMarkedJob(job)
+                updateMark(0,image)
+                setBackGround(false,image)
+//                updateMark(0, imageMark)
+//                jobsAdapter.notifyItemChanged(pos)
+            }
         }
 
         markerAdapter.setOnItemMarkedClickListener { job ->
             titleCurrentJob = job.title ?: ""
-            job.is_mark = 0
             homeViewMode.deleteMarkedJob(job)
         }
 
@@ -193,9 +205,20 @@ class HomeFragment : Fragment() {
                 .show()
 
         }
+
         binding.showAllMarked.setOnClickListener {
             val action = HomeFragmentDirections.actionHomeFragmentToListJobsFragment(null)
             findNavController().navigate(action)
+        }
+    }
+
+    private fun updateMark(isMarker: Int, mark: ImageView) {
+        if (isMarker == 0) {
+            mark.setImageResource(com.example.myapplication.R.drawable.ic_mark)
+            mark.tag = "mark"
+        } else {
+            mark.setImageResource(com.example.myapplication.R.drawable.ic_marked)
+            mark.tag = "marked"
         }
     }
 
@@ -263,6 +286,7 @@ class HomeFragment : Fragment() {
 
                 val oldCount: Int = jobs.size
                 jobs.addAll(newJobs)
+                jobsAdapter.homeViewModel=homeViewMode
                 jobsAdapter.jobs = jobs
                 jobsAdapter.notifyItemRangeChanged(oldCount, jobs.size)
 
@@ -317,6 +341,35 @@ class HomeFragment : Fragment() {
 
 
     }
+
+    private fun setBackGround(isMark: Boolean, mark: ImageView) {
+        val sdk = android.os.Build.VERSION.SDK_INT;
+
+        if (isMark) {
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                mark.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        com.example.myapplication.R.drawable.ic_round_search_24
+                    )
+                );
+            } else {
+                mark.background = ContextCompat.getDrawable(requireContext(), com.example.myapplication.R.drawable.ic_round_search_24);
+            }
+        } else {
+            if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                mark.setBackgroundDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        com.example.myapplication.R.drawable.ic_mark
+                    )
+                );
+            } else {
+                mark.background = ContextCompat.getDrawable(requireContext(), com.example.myapplication.R.drawable.ic_mark);
+            }
+        }
+    }
+
 
     private fun getMarkedLiveDataJobs() {
 

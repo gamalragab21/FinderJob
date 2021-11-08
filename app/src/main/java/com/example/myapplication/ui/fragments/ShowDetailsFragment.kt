@@ -68,7 +68,7 @@ class ShowDetailsFragment : Fragment() {
 
 
             binding.btnMark.setOnClickListener {
-                if (binding.btnMark.background == requireContext().getDrawable(R.drawable.ic_marked)) {
+                if (jobContent.is_mark) {
                     homeViewModel.deleteMarkedJob(job = jobContent)
                 } else {
                     homeViewModel.insertMarkedJob(jobContent)
@@ -163,9 +163,9 @@ class ShowDetailsFragment : Fragment() {
             jobContent.url.toString()
         else "unknown"
 
-        homeViewModel.data.observe(viewLifecycleOwner, { list ->
+        homeViewModel.dataIds.observe(viewLifecycleOwner, { list ->
             list?.let {
-                if (it.contains(jobContent)) updateMark(1)
+                if (it.contains(jobContent.id)) updateMark(1)
                 else updateMark(0)
             }
 
@@ -183,7 +183,6 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun loadPhotoImageCompany(companyLogoUrl: String?) {
-        Log.i("GamalJob", "onBindViewHolder: $companyLogoUrl")
 
         if (companyLogoUrl.isNullOrEmpty()) {
             binding.progressShimmerPhoto.stopShimmer()

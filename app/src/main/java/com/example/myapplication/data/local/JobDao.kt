@@ -21,6 +21,9 @@ interface JobDao {
     @Query("DELETE FROM job_table WHERE id = :id")
     suspend fun delete(id : Int):Int
 
+    @Query("select id from job_table")
+     fun getIds():LiveData<List<Int>>
+
 
 
 
