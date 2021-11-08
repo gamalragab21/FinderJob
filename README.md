@@ -1,6 +1,7 @@
-# Job Finder
-Now , I'm finished building a simple project Job Finder App
-##  technology used [dagger hilt, coroutines, navigation components, LiveData, Skelton patterns, clean code, Room DB, Glide,Retrofit, and more..]
+# Job Finder 
+I'm finished building a simple project Job Finder App
+## technology 
+used [dagger hilt, coroutines, navigation components, LiveData, Skelton patterns, clean code, Room DB, Glide,Retrofit, and more..]
 
 
 
