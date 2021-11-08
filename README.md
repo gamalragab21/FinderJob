@@ -14,7 +14,7 @@ Now , I'm finished building a simple project Job Finder App
 <img src="https://user-images.githubusercontent.com/67482991/140741422-8441d9b7-59de-48f5-9b55-90742981f067.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741456-cb556120-1611-4312-befb-0f7a04911c55.png" width="200">&nbsp;
 <img src="https://user-images.githubusercontent.com/67482991/140741485-7a1fcf6e-1e0d-44c9-bcb1-cc6e8a3f379b.png" width="200">&nbsp;
-<img src="https://user-images.githubusercontent.com/67482991/140741497-d446e8a7-29d9-4261-8a27-980609b1b3c8.png" width="200">
+<img src="https://user-images.githubusercontent.com/67482991/140741497-d446e8a7-29d9-4261-8a27-980609b1b3c8.png" width="200">&nbsp;
 
 
 
@@ -22,7 +22,6 @@ Now , I'm finished building a simple project Job Finder App
 
 
 
-<img src="https://user-images.githubusercontent.com/67482991/140739995-90bb70d1-b6e8-46a2-909b-af225f36fb0a.png" width="200">&nbsp;
 
 
 
